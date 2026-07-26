@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+sentence-transformers
+transformers
+torch
+rank-bm25
+plotly
+openai
+tqdm
+streamlit        # optional, for app/
