@@ -34,7 +34,11 @@ def main(semantic_rankings=None, sample=None, seed=0):
     relevance, eligible = build_relevance(students, profs, papers)
 
     rng = np.random.default_rng(seed)
-    if sample:
+    # If semantic rankings are supplied, evaluate every method on exactly the
+    # students they cover (so all methods are compared on the same set).
+    if semantic_rankings is not None:
+        eligible = [i for i in eligible if i in semantic_rankings]
+    elif sample:
         eligible = list(rng.choice(eligible, size=min(sample, len(eligible)), replace=False))
     print(f"Eligible students (area-labelled): {len(eligible)}")
 
@@ -61,4 +65,9 @@ def main(semantic_rankings=None, sample=None, seed=0):
 
 
 if __name__ == "__main__":
-    main()
+    import argparse, json
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rankings", help="path to a rankings_*.json from retrieve.py")
+    args = ap.parse_args()
+    sem = json.load(open(args.rankings)) if args.rankings else None
+    main(semantic_rankings=sem)
