@@ -1,0 +1,14 @@
+# secrets — never commit API keys
+.env
+*.key
+# generated artifacts — keep result csv/json, ignore big vectors
+outputs/*.npy
+outputs/*.faiss
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+# OS
+.DS_Store
