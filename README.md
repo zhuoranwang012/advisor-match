@@ -34,8 +34,6 @@ Query: *"soft robotics and control for prosthetics"*
 All four are genuine soft-robotics faculty, retrieved from a free-text query that shares
 little surface vocabulary with the papers — the vocabulary gap in action.
 
-
-
 ## Method
 - **Retrieval unit: papers, not professors.** Captures a single on-target paper that a
   professor-level summary would dilute; also yields the exact papers behind each match.
@@ -70,15 +68,21 @@ rather than a real weakness. This is why the LLM judge is the primary metric.
 | `src/` | data loading, embedding, retrieval, baselines, explanation, judge |
 | `eval/` | proxy labels, metrics, eval runners (area + LLM judge) |
 | `notebooks/` | EDA + interactive topic map |
-| `app/` | optional Streamlit demo |
+| `app/` | Streamlit demo |
 | `legacy/` | archived original RA scripts (provenance) |
 
 ## Quickstart
 ```bash
 pip install -r requirements.txt
-export OPENAI_API_KEY=...            # for the LLM judge (and RAG explanation)
+export OPENAI_API_KEY=...            # for the LLM judge and RAG explanation
 
+# 1. build the paper-level index (downloads the encoder model)
 python src/retrieve.py minilm                              # -> outputs/rankings_minilm.json
+
+# 2. evaluate
 python eval/run_eval.py --rankings outputs/rankings_minilm.json          # area proxy eval
 python eval/run_judge_eval.py --semantic outputs/rankings_minilm.json --sample 60   # LLM-judge eval
+
+# 3. try a single recommendation with grounded explanations
+python src/recommend_demo.py --text "soft robotics and control for prosthetics"
 ```
